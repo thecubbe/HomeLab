@@ -213,7 +213,7 @@ kubectl wait --namespace metallb-system \
                 --selector=component=controller \
                 --timeout=1800s
 kubectl apply -f ipAddressPool.yaml
-kubectl apply -f https://raw.githubusercontent.com/JamesTurland/JimsGarage/main/Kubernetes/RKE2/l2Advertisement.yaml
+kubectl apply -f https://raw.githubusercontent.com/thecubbe/HomeLab/refs/heads/main/RKE2/l2Advertisement.yaml
 
 # Step 10: Install Rancher (Optional - Delete if not required)
 #Install Helm

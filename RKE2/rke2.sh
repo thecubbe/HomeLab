@@ -17,12 +17,12 @@ echo -e " \033[32;5m                     a k a @JimsGarage                     \
 KVVERSION="v0.6.3"
 
 # Set the IP addresses of the admin, masters, and workers nodes
-admin=10.100.12.20
-master1=10.100.12.21
-master2=10.100.12.22
-master3=10.100.12.23
-worker1=10.100.12.24
-worker2=10.100.12.25
+admin=10.100.12.120
+master1=10.100.12.121
+master2=10.100.12.122
+master3=10.100.12.123
+worker1=10.100.12.124
+worker2=10.100.12.125
 
 # User of remote machines
 user=administrator
@@ -31,7 +31,7 @@ user=administrator
 interface=eth0
 
 # Set the virtual IP address (VIP)
-vip=10.100.12.122
+vip=10.100.12.12
 
 # Array of all master nodes
 allmasters=($master1 $master2 $master3)
@@ -52,7 +52,7 @@ allnomaster1=($master2 $master3 $worker1 $worker2)
 lbrange=10.100.12.50-10.100.12.100
 
 #ssh certificate name variable
-certName=id_rsa_rke2
+certName=id_rsa
 
 #############################################
 #            DO NOT EDIT BELOW              #

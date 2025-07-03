@@ -203,7 +203,7 @@ echo -e " \033[32;5mDeploying Metallb\033[0m"
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/manifests/metallb-native.yaml
 # Download ipAddressPool and configure using lbrange above
-curl -sO https://raw.githubusercontent.com/JamesTurland/JimsGarage/main/Kubernetes/RKE2/ipAddressPool
+curl -sO https://raw.githubusercontent.com/thecubbe/HomeLab/refs/heads/main/RKE2/ipAddressPool
 cat ipAddressPool | sed 's/$lbrange/'$lbrange'/g' > $HOME/ipAddressPool.yaml
 
 # Step 9: Deploy IP Pools and l2Advertisement

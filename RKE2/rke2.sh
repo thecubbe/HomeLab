@@ -1,12 +1,21 @@
 #!/bin/bash
 
-echo -e " \033[36;5m                      ___ _  _____ ___                     \033[0m"
-echo -e " \033[36;5m                     | _ \ |/ / __|_  )                    \033[0m"
-echo -e " \033[36;5m                     |   / ' <| _| / /                     \033[0m"
-echo -e " \033[36;5m                     |_|_\_|\_\___/___|                    \033[0m"
-echo -e " \033[36;5m                                                           \033[0m"
-echo -e " \033[32;5m          Thanks for this script to James Turland,         \033[0m"
-echo -e " \033[32;5m                     a k a @JimsGarage                     \033[0m"
+echo -e " \033[33;5m         _   _                     _     _              \033[0m"
+echo -e " \033[33;5m        | |_| |__   ___  ___ _   _| |__ | |__   ___     \033[0m"
+echo -e " \033[33;5m        | __| '_ \ / _ \/ __| | | | '_ \| '_ \ / _ \    \033[0m"
+echo -e " \033[33;5m        | |_| | | |  __/ (__| |_| | |_) | |_) |  __/    \033[0m"
+echo -e " \033[33;5m         \__|_| |_|\___|\___|\__,_|_.__/|_.__/ \___|    \033[0m"
+                                            
+echo -e " \033[33;5m                 __          __ ____                    \033[0m"
+echo -e " \033[33;5m                /__\  /\ /\ /__\___ \                   \033[0m"
+echo -e " \033[33;5m               / \// / //_//_\   __) |                  \033[0m"
+echo -e " \033[33;5m              / _  \/ __ \//__  / __/                   \033[0m"
+echo -e " \033[33;5m              \/ \_/\/  \/\__/ |_____|                  \033[0m"
+
+
+echo -e " \033[36;5m                                                        \033[0m"
+echo -e " \033[32;5m       Thanks for this script to James Turland,         \033[0m"
+echo -e " \033[32;5m                  a k a @JimsGarage                     \033[0m"
 
 
 #############################################
@@ -14,7 +23,7 @@ echo -e " \033[32;5m                     a k a @JimsGarage                     \
 #############################################
 
 # Version of Kube-VIP to deploy
-KVVERSION="v0.6.3"
+KVVERSION="v0.9.2"
 
 # Set the IP addresses of the admin, masters, and workers nodes
 admin=10.100.12.120
@@ -77,7 +86,7 @@ else
 fi
 
 # Create SSH Config file to ignore checking (don't use in production!)
-sed -i '1s/^/StrictHostKeyChecking no\n/' ~/.ssh/config
+#sed -i '1s/^/StrictHostKeyChecking no\n/' ~/.ssh/config
 
 #add ssh keys for all nodes
 for node in "${all[@]}"; do
@@ -88,7 +97,7 @@ done
 # create RKE2's self-installing manifest dir
 sudo mkdir -p /var/lib/rancher/rke2/server/manifests
 # Install the kube-vip deployment into rke2's self-installing manifest folder
-curl -sO https://raw.githubusercontent.com/thecubbe/HomeLab/refs/heads/main/RKE2/kube-vip
+curl -sO https://raw.githubusercontent.com/JamesTurland/JimsGarage/main/Kubernetes/RKE2/kube-vip
 cat kube-vip | sed 's/$interface/'$interface'/g; s/$vip/'$vip'/g' > $HOME/kube-vip.yaml
 sudo mv kube-vip.yaml /var/lib/rancher/rke2/server/manifests/kube-vip.yaml
 
@@ -203,7 +212,7 @@ echo -e " \033[32;5mDeploying Metallb\033[0m"
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/manifests/metallb-native.yaml
 # Download ipAddressPool and configure using lbrange above
-curl -sO https://raw.githubusercontent.com/thecubbe/HomeLab/refs/heads/main/RKE2/ipAddressPool
+curl -sO https://raw.githubusercontent.com/JamesTurland/JimsGarage/main/Kubernetes/RKE2/ipAddressPool
 cat ipAddressPool | sed 's/$lbrange/'$lbrange'/g' > $HOME/ipAddressPool.yaml
 
 # Step 9: Deploy IP Pools and l2Advertisement
@@ -213,7 +222,7 @@ kubectl wait --namespace metallb-system \
                 --selector=component=controller \
                 --timeout=1800s
 kubectl apply -f ipAddressPool.yaml
-kubectl apply -f https://raw.githubusercontent.com/thecubbe/HomeLab/refs/heads/main/RKE2/l2Advertisement.yaml
+kubectl apply -f https://raw.githubusercontent.com/JamesTurland/JimsGarage/main/Kubernetes/RKE2/l2Advertisement.yaml
 
 # Step 10: Install Rancher (Optional - Delete if not required)
 #Install Helm

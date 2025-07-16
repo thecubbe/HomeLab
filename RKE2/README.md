@@ -1,5 +1,4 @@
 # Simple RKE2 Cluster Install in HA configuration
-> with additional complementary "tools"<br/>
 
 Goal for this cluster is to be used as a replacement for many-many-many Docker hosts I'm currently running in my [HomeLab](https://github.com/thecubbe/HomeLab)
 
@@ -7,24 +6,7 @@ Installation components:
 - [RKE2](https://docs.rke2.io) - Enterprise-ready next-gen. Kubernetes distribution
 - [kube-vip](https://kube-vip.io/) - Provides virtual IP (for HA) and load balancer
 
-
-> **Table of Contents**:
->
-> * [Prerequisites](#prerequisites)
-> * [Server Node 1](#server-node-1-rke2s01)
->   * [Create RKE2 Config](#create-rke2-configyaml-file-for-our-server-1)
->   * [Spin-up RKE2](#spin-up-rke2)
->   * [Install Kube-vip](#install-kube-vip)
-> * [Server Node 2](#server-node-2-rke2s02)
->   * [Create RKE2 Config for 2nd node](#create-rke2-configyaml-file-for-our-server-1)
->   * [Spin-up RKE2 on second node](#spin-up-rke2-on-second-server-node)
-> * [Server Node 3](#for-our-3rd-server-node-repeat-steps-from-server-node-2)
-> * [Install Kube-vip Loadbalancer](#implement-load-balancer-function-kube-vip-cloud-provider)
-> * [Add Agent nodes](#add-agent-nodes-rke2a1--rke2a2)
->
-> * [Install Complementary tools](#complementary-tools)
-
-
+![vlan_example](img/homelab-rke2-banner.svg)
 
 
 ## Prerequisites
@@ -43,9 +25,26 @@ I'll be running 5 linux VMs created with [Ubuntu](https://cloud-images.ubuntu.co
 |             |`rke2a02` | 4c (1 sockets, 4 cores) | 8 GiB | 10.69.22.**42** | 50 GB | Ubuntu 24.04 amd x64 |
 
 >[!TIP]
->I would suggest creating dedicated VLAN for this cluster and assigning static IP to every instance.<br/>
+>I would suggest creating dedicated VLAN for your cluster and assigning static IP to every instance.<br/>
 >
+>My dedicated RKE2 cluster VLAN as an example:
 >![vlan_example](img/vlan_example.png)
+
+> **Table of Contents**:
+>
+> * [Prerequisites](#prerequisites)
+> * [Server Node 1](#server-node-1-rke2s01)
+>   * [Create RKE2 Config](#create-rke2-configyaml-file-for-our-server-1)
+>   * [Spin-up RKE2](#spin-up-rke2)
+>   * [Install Kube-vip](#install-kube-vip)
+> * [Server Node 2](#server-node-2-rke2s02)
+>   * [Create RKE2 Config for 2nd node](#create-rke2-configyaml-file-for-our-server-1)
+>   * [Spin-up RKE2 on second node](#spin-up-rke2-on-second-server-node)
+> * [Server Node 3](#for-our-3rd-server-node-repeat-steps-from-server-node-2)
+> * [Install Kube-vip Loadbalancer](#implement-load-balancer-function-kube-vip-cloud-provider)
+> * [Add Agent nodes](#add-agent-nodes-rke2a1--rke2a2)
+>
+> * [Install Complementary tools](#complementary-tools)
 
 
 
@@ -228,14 +227,14 @@ ubectl -n kube-system get po
 ip a
 ```
 
-``
+
 
 *Now it should look like this:*
 
 `2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000` <br/>
 `    link/ether ab:cd:ef:gh:ij:kl brd ff:ff:ff:ff:ff:ff` <br/>
 `    altname enp0s18 <br/>` <br/>
-`    inet **10.69.22.31/24** metric 100 brd 10.69.22.255 scope global dynamic eth0` <br/>
+`    inet 10.69.22.31/24 metric 100 brd 10.69.22.255 scope global dynamic eth0` <br/>
 `       valid_lft 85664sec preferred_lft 85664sec` <br/>
 **`    inet 10.69.22.10/24 metric 100 scope global dynamic eth0`** <br/>
 `       valid_lft 85664sec preferred_lft 85664sec` <br/>
@@ -405,6 +404,9 @@ kubectl create configmap --namespace kube-system kubevip --from-literal range-gl
 ```yaml
 token: coming soon... :)
 ```
+
+
+
 
 
 # Complementary tools

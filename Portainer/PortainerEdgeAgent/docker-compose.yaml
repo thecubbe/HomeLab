@@ -1,0 +1,15 @@
+services:
+  portainer-edge:
+    image: portainer/agent:2.27.9
+    container_name: portainer-edge-agent
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+      - /:/host
+      - /home/administrator/portainer-edge/portainer_agent_data:/data
+    environment:
+      - EDGE=1
+      - EDGE_ID= # Your Edge ID
+      - EDGE_KEY= # Your Edge KEY
+      - EDGE_INSECURE_POLL=1
